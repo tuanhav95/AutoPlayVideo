@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="These objects are no longer populated in the framework because the framework can’t determine the count of items as perceived by the user (such as separators, headers, or RecyclerView items that represent multiple perceived items)." />
+</FrameLayout>

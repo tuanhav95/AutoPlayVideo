@@ -6,6 +6,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="These objects are no longer populated in the framework because the framework can’t determine the count of items as perceived by the user (such as separators, headers, or RecyclerView items that represent multiple perceived items)." />
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/test1"
+        android:textColor="@android:color/white" />
 </FrameLayout>

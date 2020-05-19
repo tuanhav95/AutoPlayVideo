@@ -1,4 +1,4 @@
-package com.tuanha95.auto
+package com.tuanhav95.auto
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
@@ -28,6 +28,7 @@ class Auto(
                 val holder = mRecyclerView.getChildViewHolder(view)
 
                 if (holder is PlayHolder && getPosition(mCurrentHolder) == getPosition(holder)) {// view đã ẩn khỏi màn hình
+                    println("onChildViewDetachedFromWindow")
                     pause()
                 }
 
@@ -67,7 +68,7 @@ class Auto(
                 }
 
                 for (viewHolder in list) {
-                    val percent = getPercent(viewHolder.getView())
+                    val percent = getPercent(viewHolder.getView() ?: continue)
 
                     if (percent > max && percent > 50) {
                         max = percent
@@ -77,15 +78,17 @@ class Auto(
 
 
                 if (holder != null) {
-                    if (getPosition(mCurrentHolder) == getPosition(holder)) {// view cần play lại là view đang play hiện tại
-                        return
-                    }
+//                    if (getPosition(mCurrentHolder) == getPosition(holder)) {// view cần play lại là view đang play hiện tại
+//                        return
+//                    }
+//
+//                    pause()
 
-                    pause()
+                    val oldHolderPlay = mCurrentHolder
 
                     mCurrentHolder = holder
 
-                    play()
+                    play(oldHolderPlay)
 
                 } else {// không tìm thấy view nào ở trên màn hình
                     pause()
@@ -114,9 +117,12 @@ class Auto(
         if (pause) pause()
     }
 
-    private fun play() {
+    private fun play(oldHolderPlay: PlayHolder?) {
         mCurrentHolder?.let {
-            mAutoListener?.onHolderNeedPlay(it as RecyclerView.ViewHolder)
+            mAutoListener?.onHolderNeedPlay(
+                oldHolderPlay as RecyclerView.ViewHolder?,
+                it as RecyclerView.ViewHolder
+            )
         }
     }
 
@@ -124,7 +130,7 @@ class Auto(
         mCurrentHolder?.let {
             mAutoListener?.onHolderNeedPause(it as RecyclerView.ViewHolder)
         }
-        mCurrentHolder = null
+//        mCurrentHolder = null
     }
 
     private fun delayHandler() {
@@ -159,7 +165,7 @@ class Auto(
             val xTop = location[0]
             val xBottom = xTop + width
 
-            getPercent(xTop, xBottom, widthRoot)
+            getPercent(xTop, xBottom, width, widthRoot)
         } else {
 
             val height = view.height
@@ -168,32 +174,36 @@ class Auto(
             val yTop = location[1]
             val yBottom = yTop + height
 
-            getPercent(yTop, yBottom, heightRoot)
+            getPercent(yTop, yBottom, height, heightRoot)
         }
     }
 
-    private fun getPercent(start: Int, end: Int, sizeScreen: Int): Int {
-        return if (start < 0 && end > sizeScreen) {// tràn màn hình
+    private fun getPercent(start: Int, end: Int, size: Int, sizeScreen: Int): Int {
+        return if (start <= 0 && end >= sizeScreen) {// tràn màn hình
             101
         } else if (start < 0 && end < sizeScreen) {// nằm trên màn hình hình có 1 phần ở trong màn hình
-            end * 100 / sizeScreen
+            end * 100 / size
         } else if (start >= 0 && end < sizeScreen && sizeScreen / 2 in (start + 1) until end) {// ở chính giữa màn hình
             101
         } else if (start >= 0 && end < sizeScreen) {// nằm trong màn hình
             100
         } else if (start >= 0 && end > sizeScreen) {// nằm dưới màn hình nhưng có 1 phần ở trong màn hình
-            (sizeScreen - start) * 100 / sizeScreen
+            (sizeScreen - start) * 100 / size
         } else {
             0
         }
     }
 
     interface PlayHolder {
-        fun getView(): View
+        fun getView(): View?
     }
 
     interface AutoListener {
-        fun onHolderNeedPlay(viewHolder: RecyclerView.ViewHolder)
+        fun onHolderNeedPlay(
+            oldHolderPlay: RecyclerView.ViewHolder?,
+            newHolderPlay: RecyclerView.ViewHolder
+        )
+
         fun onHolderNeedPause(viewHolder: RecyclerView.ViewHolder)
     }
 }

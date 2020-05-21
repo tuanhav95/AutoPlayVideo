@@ -17,7 +17,7 @@ class Auto(
 
     private var mOnScrollListener: RecyclerView.OnScrollListener
 
-    var mPausing = false
+    var mPausing = true
 
     var mCurrentHolder: PlayHolder? = null
 
@@ -70,6 +70,7 @@ class Auto(
                 for (viewHolder in list) {
                     val percent = getPercent(viewHolder.getView() ?: continue)
 
+                    println("AUTO: " + percent)
                     if (percent > max && percent > 50) {
                         max = percent
                         holder = viewHolder
@@ -88,9 +89,11 @@ class Auto(
 
                     mCurrentHolder = holder
 
+                    println("AUTO: play")
                     play(oldHolderPlay)
 
                 } else {// không tìm thấy view nào ở trên màn hình
+                    println("AUTO: pause")
                     pause()
                 }
             }
@@ -181,13 +184,13 @@ class Auto(
     private fun getPercent(start: Int, end: Int, size: Int, sizeScreen: Int): Int {
         return if (start <= 0 && end >= sizeScreen) {// tràn màn hình
             101
-        } else if (start < 0 && end < sizeScreen) {// nằm trên màn hình hình có 1 phần ở trong màn hình
+        } else if (0 in start..end) {// nằm trên màn hình hình có 1 phần ở trong màn hình
             end * 100 / size
-        } else if (start >= 0 && end < sizeScreen && sizeScreen / 2 in (start + 1) until end) {// ở chính giữa màn hình
+        } else if (start >= 0 && end <= sizeScreen && sizeScreen / 2 in (start + 1) until end) {// ở chính giữa màn hình
             101
-        } else if (start >= 0 && end < sizeScreen) {// nằm trong màn hình
+        } else if (start >= 0 && end <= sizeScreen) {// nằm trong màn hình
             100
-        } else if (start >= 0 && end > sizeScreen) {// nằm dưới màn hình nhưng có 1 phần ở trong màn hình
+        } else if (sizeScreen in start..end) {// nằm dưới màn hình nhưng có 1 phần ở trong màn hình
             (sizeScreen - start) * 100 / size
         } else {
             0

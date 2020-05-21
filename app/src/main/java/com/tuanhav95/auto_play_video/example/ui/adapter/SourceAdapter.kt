@@ -46,7 +46,7 @@ class SourceAdapter(
         holder.onBindViewHolder(mList[position])
     }
 
-     class PhotoHolder(itemView: View) : ViewHolder<SourcePhoto>(itemView) {
+    class PhotoHolder(itemView: View) : ViewHolder<SourcePhoto>(itemView) {
 
         override fun onBindViewHolder(t: SourcePhoto) {
             super.onBindViewHolder(t)
@@ -54,7 +54,9 @@ class SourceAdapter(
         }
     }
 
-     class VideoHolder(itemView: View) : ViewHolder<SourceVideo>(itemView), Auto.PlayHolder {
+    class VideoHolder(itemView: View) : ViewHolder<SourceVideo>(itemView), Auto.PlayHolder {
+
+        var playing = false
 
         override fun getView(): View? {
             return itemView.videoView
@@ -69,6 +71,7 @@ class SourceAdapter(
         }
 
         open fun play() {
+            playing = true
             println("VideoHolder play")
             itemView.imageView.alphaAnimation(0f)
 
@@ -78,11 +81,16 @@ class SourceAdapter(
         }
 
         open fun pause() {
+            playing = false
             println("VideoHolder pause")
             itemView.imageView.alphaAnimation(1f)
 
             if (!itemView.videoView.isPlaying) return
             itemView.videoView.pause()
+        }
+
+        open fun isPlaying(): Boolean {
+            return playing
         }
     }
 

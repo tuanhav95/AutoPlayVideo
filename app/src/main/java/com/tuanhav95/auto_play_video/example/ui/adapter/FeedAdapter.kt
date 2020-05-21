@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.tuanhav95.auto.Auto
 import com.tuanhav95.auto_play_video.example.R
@@ -36,12 +37,17 @@ class FeedAdapter(private val mList: ArrayList<Feed>) :
         var mAuto: Auto
 
         init {
+            PagerSnapHelper().attachToRecyclerView(itemView.recSource)
+
             mAuto = Auto(itemView.recSource, object : Auto.AutoListener {
                 override fun onHolderNeedPlay(
                     oldHolderPlay: RecyclerView.ViewHolder?,
                     newHolderPlay: RecyclerView.ViewHolder
                 ) {
-                    if (oldHolderPlay?.adapterPosition == newHolderPlay?.adapterPosition) {
+                    if (oldHolderPlay?.adapterPosition == newHolderPlay.adapterPosition) {
+                        if (oldHolderPlay is SourceAdapter.VideoHolder && !oldHolderPlay.isPlaying()) {
+                            oldHolderPlay.play()
+                        }
                         return
                     }
 

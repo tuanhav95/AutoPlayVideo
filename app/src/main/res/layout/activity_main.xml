@@ -5,15 +5,16 @@
     android:layout_height="match_parent"
     tools:context="com.tuanhav95.auto_play_video.example.ui.activity.MainActivity">
 
-    <!--    <androidx.recyclerview.widget.RecyclerView-->
-    <!--        android:id="@+id/recyclerView"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        android:clipToPadding="false"-->
-    <!--        android:paddingTop="100dp"-->
-    <!--        android:paddingBottom="200dp" />-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="100dp"
+            android:paddingBottom="200dp" />
 
     <com.tuanhav95.auto.OverlayView
-        android:layout_width="400dp"
-        android:layout_height="400dp" />
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent" />
 </FrameLayout>

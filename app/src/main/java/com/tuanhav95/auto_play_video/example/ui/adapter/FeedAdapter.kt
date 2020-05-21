@@ -38,6 +38,8 @@ class FeedAdapter(private val mList: ArrayList<Feed>) :
 
         init {
             PagerSnapHelper().attachToRecyclerView(itemView.recSource)
+            
+            itemView.recSource.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
 
             mAuto = Auto(itemView.recSource, object : Auto.AutoListener {
                 override fun onHolderNeedPlay(
@@ -86,8 +88,6 @@ class FeedAdapter(private val mList: ArrayList<Feed>) :
             super.onBindViewHolder(t)
             itemView.recSource.resize(-3, mItem!!.heightSource)
 
-            itemView.recSource.layoutManager =
-                LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
             itemView.recSource.adapter =
                 SourceAdapter(mItem!!.source)
         }

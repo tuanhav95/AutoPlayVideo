@@ -31,8 +31,6 @@ class Test {
             return pointNear
         }
 
-//    fun canUpdate(point: Point)
-
         fun update(points: ArrayList<Point>, pointCenter: Point, pointMove: Point) {
             if (points.size != 4) return
 
@@ -84,61 +82,64 @@ class Test {
         }
     }
 
-    open class Point : android.graphics.Point {
-        open var id: String = ""
+    open class Point {
+        var x = 0f
+        var y = 0f
 
         constructor()
 
-        constructor(x: Int, y: Int) {
+        constructor(x: Int, y: Int) :this(x.toFloat(),y.toFloat())
+
+        constructor(x: Float, y: Float) {
             this.x = x
             this.y = y
         }
 
+        fun set(x: Int, y: Int) {
+            set(x.toFloat(), y.toFloat())
+        }
+
+        fun set(x: Float, y: Float) {
+            this.x = x
+            this.y = y
+        }
 
     }
 
 
     class PointTopRight : Point {
-        override var id: String = "PointTopRight"
 
         constructor()
 
-        constructor(x: Int, y: Int) {
-            this.x = x
-            this.y = y
-        }
+        constructor(x: Int, y: Int) :super(x, y)
+
+        constructor(x: Float, y: Float) :super(x, y)
     }
 
     class PointTopLeft : Point {
-        override var id: String = "PointTopLeft"
 
         constructor()
 
-        constructor(x: Int, y: Int) {
-            this.x = x
-            this.y = y
-        }
+        constructor(x: Int, y: Int) :super(x, y)
+
+        constructor(x: Float, y: Float) :super(x, y)
     }
 
     class PointBottomRight : Point {
-        override var id: String = "PointBottomRight"
 
         constructor()
 
-        constructor(x: Int, y: Int) {
-            this.x = x
-            this.y = y
-        }
+        constructor(x: Int, y: Int) :super(x, y)
+
+        constructor(x: Float, y: Float) :super(x, y)
     }
 
     class PointBottomLeft : Point {
-        override var id: String = "PointBottomLeft"
 
         constructor()
 
-        constructor(x: Int, y: Int) {
-            this.x = x
-            this.y = y
-        }
+        constructor(x: Int, y: Int) :super(x, y)
+
+        constructor(x: Float, y: Float) :super(x, y)
     }
 }
